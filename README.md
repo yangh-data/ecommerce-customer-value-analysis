@@ -2,7 +2,7 @@
 
 > 个人项目 · AI 辅助完成 · 公开数据集（已匿名化脱敏）· 可复现
 
-📊 **交互式分析报告（在线版）**：https://<你的用户名>.github.io/ecommerce-customer-value-analysis/
+📊 **交互式分析报告（在线版）**：https://yangh-data.github.io/ecommerce-customer-value-analysis/
 
 基于英国某在线零售商 2010.12–2011.12 的真实交易数据（UCI Online Retail），完整走通「数据清洗 → 客户价值分层 → 聚类画像 → 关联规则 → 趋势预测」的分析全流程，并以交互式可视化报告呈现结果。
 
