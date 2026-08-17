@@ -1,0 +1,14 @@
+# 数据（约 23MB，公开下载即可，见 README）
+data/
+
+# 运行产物
+outputs/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# 系统文件
+.DS_Store
+Thumbs.db

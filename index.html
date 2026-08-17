@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>电商客户价值挖掘与运营策略分析 · AI辅助数据分析作品 · 杨浩</title>
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+<style>
+:root{
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --line:#c3c2b7; --border:rgba(11,11,11,.10);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4;
+  --blue100:#cde2fb; --blue300:#6da7ec; --blue450:#2a78d6; --blue600:#184f95;
+}
+*{box-sizing:border-box; margin:0; padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif; background:var(--page); color:var(--ink); line-height:1.65; padding:24px 16px 48px}
+.wrap{max-width:1080px; margin:0 auto}
+header.hero{text-align:center; padding:28px 16px 20px}
+h1{font-size:26px; font-weight:700; letter-spacing:.5px}
+.sub{margin-top:8px; color:var(--ink2); font-size:14px}
+.badges{margin-top:12px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap}
+.badge{font-size:12px; padding:3px 12px; border:1px solid var(--border); border-radius:999px; color:var(--ink2); background:var(--surface)}
+.badge.hl{color:var(--blue600); border-color:var(--blue100); background:#f2f7fd}
+section{margin-top:28px}
+h2{font-size:17px; font-weight:700; padding-bottom:6px; border-bottom:2px solid var(--ink); display:flex; align-items:baseline; gap:10px}
+h2 .no{color:var(--blue450); font-weight:700}
+.card{background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; margin-top:14px}
+.card p{margin-top:8px; font-size:14.5px}
+.tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:14px}
+.tile{background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px}
+.tile .v{font-size:28px; font-weight:700; font-variant-numeric:tabular-nums}
+.tile .l{font-size:13px; color:var(--ink2); margin-top:4px}
+.tile .s{font-size:12px; color:var(--muted); margin-top:2px}
+.chart{width:100%; height:320px; margin-top:8px}
+.chart.sm{height:300px}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+@media (max-width:800px){.grid2{grid-template-columns:1fr}}
+table{width:100%; border-collapse:collapse; margin-top:12px; font-size:13.5px}
+th,td{padding:8px 10px; text-align:left; border-bottom:1px solid var(--grid)}
+th{color:var(--ink2); font-weight:600; background:#f5f5f2; font-size:12.5px}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+.callout{border-left:4px solid var(--blue450); background:#f2f7fd; padding:12px 14px; margin-top:12px; font-size:13.5px; border-radius:0 8px 8px 0}
+.callout b{color:var(--blue600)}
+.callout.amber{border-left-color:#d59a00; background:#fdf7e8}
+.callout.amber b{color:#8a6400}
+.tag{display:inline-block; font-size:12px; color:var(--ink2); background:#f5f5f2; border:1px solid var(--border); border-radius:6px; padding:1px 8px; margin-right:6px}
+footer{margin-top:36px; text-align:center; color:var(--muted); font-size:12.5px}
+.note{font-size:12.5px; color:var(--muted); margin-top:6px}
+@media print{ body{background:#fff} .card,.tile{break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>电商客户价值挖掘与运营策略分析</h1>
+  <div class="sub">数据分析作品 · 个人项目 · 使用 AI 工具辅助完成 · 2026 年 8 月</div>
+  <div class="badges">
+    <span class="badge hl">个人项目</span>
+    <span class="badge hl">AI 辅助完成</span>
+    <span class="badge">公开数据集 · 已匿名化脱敏</span>
+    <span class="badge">可复现（Python）</span>
+  </div>
+  <div class="sub" style="margin-top:6px">杨浩 ｜ 南京林业大学 · 大数据管理与应用 · 2027 届</div>
+</header>
+
+<!-- KPI -->
+<section>
+  <div class="tiles">
+    <div class="tile"><div class="v">£891 万</div><div class="l">年度交易总额</div><div class="s">清洗后有效数据口径</div></div>
+    <div class="tile"><div class="v">4,334</div><div class="l">识别出的客户数</div><div class="s">覆盖 38 个国家和地区</div></div>
+    <div class="tile"><div class="v">39.6 万</div><div class="l">有效交易记录</div><div class="s">原始 54.2 万条清洗后</div></div>
+    <div class="tile"><div class="v">57%</div><div class="l">高价值客户贡献</div><div class="s">仅 14.9% 的客户带来</div></div>
+  </div>
+</section>
+
+<!-- 01 概述 -->
+<section>
+  <h2><span class="no">01</span>项目概述</h2>
+  <div class="card">
+    <p><b>背景。</b>零售行业拥有最丰富的交易数据，也是数据挖掘应用最成熟的领域。本作品选择该领域被引用最多的公开数据集之一（UCI Online Retail，英国某在线零售商 2010.12–2011.12 的真实交易记录），完整走了一遍从数据清洗、客户价值分层、聚类画像、关联规则挖掘到销售趋势预测的分析流程。</p>
+    <p><b>目标。</b>回答四个业务问题：① 客户价值分布是怎样的，是否存在头部集中现象？② 不同客户群体在频次、客单价、活跃度上有哪些差异？③ 哪些品类之间存在稳定的交叉购买关系？④ 销售随时间如何波动，如何指导备货与促销节奏？</p>
+    <p><b>流程。</b>数据清洗与特征工程 → RFM 客户价值分层 → K-Means 聚类画像 → Apriori 品类关联规则 → 线性回归趋势预测，全程使用 Python（Pandas / Scikit-learn / MLxtend）实现。</p>
+  </div>
+</section>
+
+<!-- 02 数据与脱敏 -->
+<section>
+  <h2><span class="no">02</span>数据说明与脱敏声明</h2>
+  <div class="card">
+    <table>
+      <tr><th style="width:140px">字段</th><th>含义</th><th style="width:140px">示例</th><th style="width:200px">说明</th></tr>
+      <tr><td>InvoiceNo</td><td>发票号（交易 ID）</td><td>536365</td><td>一笔订单对应一个发票号</td></tr>
+      <tr><td>StockCode</td><td>商品代码</td><td>85123A</td><td>数字开头为正常商品</td></tr>
+      <tr><td>Quantity</td><td>购买数量</td><td>6</td><td>负值代表退货</td></tr>
+      <tr><td>UnitPrice</td><td>商品单价（英镑）</td><td>2.55</td><td>零/负值为无效价格</td></tr>
+      <tr><td>CustomerID</td><td>客户编号</td><td>17850</td><td>约 25% 缺失（匿名访客）</td></tr>
+      <tr><td>Country</td><td>客户所在国家</td><td>United Kingdom</td><td>英国本土约 91%</td></tr>
+    </table>
+    <div class="callout"><b>脱敏声明：</b>本作品使用的 UCI Online Retail 为公开发布的学术数据集，客户编号已由数据集发布方匿名化处理，不含任何个人身份信息；本作品仅展示<b>聚合统计结果</b>，不展示任何个体级交易明细。分析全过程代码可复现。</div>
+    <p class="note">清洗规则：① 剔除客户编号缺失的匿名交易（135,080 条）→ ② 剔除退货记录（8,905 条）→ ③ 剔除无效价格（40 条）→ ④ 剔除非商品条目如邮费、手续费（1,547 条）。每一步的判断依据均为业务逻辑，而非无差别删除。</p>
+    <div id="clean" class="chart sm"></div>
+  </div>
+</section>
+
+<!-- 03 RFM -->
+<section>
+  <h2><span class="no">03</span>RFM 客户价值分层</h2>
+  <div class="card">
+    <p><b>方法。</b>以数据集中最晚交易日期为参考日，对每个客户计算 R（最近一次购买距今 / 天）、F（观察期内交易次数）、M（总消费金额）三维打分并汇总分层。打分环节处理了一个真实数据问题：<b>一半以上客户只购买过一次</b>，等频分箱（qcut）因大量重复边界值无法切分——我实现了一个降级打分函数 <code>safe_qcut</code>：等频分箱失败时自动退回等距分箱，再按实际分箱数动态映射评分，保证任何分布形态下所有客户都能获得合理评分。</p>
+    <table>
+      <tr><th>层级</th><th class="num">人数</th><th class="num">客户占比</th><th class="num">平均购买次数</th><th class="num">最近购买间隔</th><th class="num">人均消费</th><th class="num">交易额占比</th></tr>
+      <tr><td><b>高价值客户</b></td><td class="num">645</td><td class="num">14.9%</td><td class="num">14.0 次</td><td class="num">9.4 天</td><td class="num">£8,033</td><td class="num"><b>≈57%</b></td></tr>
+      <tr><td>中价值客户</td><td class="num">1,149</td><td class="num">26.5%</td><td class="num">4.7 次</td><td class="num">37.6 天</td><td class="num">£1,949</td><td class="num">≈28%</td></tr>
+      <tr><td>低价值客户</td><td class="num">1,745</td><td class="num">40.3%</td><td class="num">1.8 次</td><td class="num">—</td><td class="num">£671</td><td class="num">≈13%</td></tr>
+      <tr><td>流失客户</td><td class="num">795</td><td class="num">18.3%</td><td class="num">—</td><td class="num">242 天+</td><td class="num">—</td><td class="num">≈2%</td></tr>
+    </table>
+    <div class="callout"><b>核心发现：</b>约 15% 的高价值客户贡献了约 57% 的交易额，而 40% 的低价值客户仅贡献约 13%——头部集中程度比经典"二八法则"更极端，高价值客户的维护成本远低于获取新客。</div>
+    <div id="rfm" class="chart sm"></div>
+  </div>
+</section>
+
+<!-- 04 K-Means -->
+<section>
+  <h2><span class="no">04</span>K-Means 客户聚类画像</h2>
+  <div class="card">
+    <p><b>方法。</b>在 RFM 三个维度基础上扩展至 10+ 个行为特征（消费均值与波动、平均商品单价、购买品类广度、周末/旺季购买比例等），Z-score 标准化后用肘部法则确定 K=4，并对聚类结果做 PCA 降维验证分离度。</p>
+    <div class="grid2">
+      <div id="radar" class="chart sm"></div>
+      <table>
+        <tr><th>群体</th><th class="num">人数</th><th class="num">平均购买次数</th><th class="num">总消费</th></tr>
+        <tr><td>聚类0 · 中等活跃客群</td><td class="num">2,108 (48.6%)</td><td class="num">6.2 次</td><td class="num">客单价 ≈£30</td></tr>
+        <tr><td>聚类1 · 一次性客户</td><td class="num">2,209 (51.0%)</td><td class="num">1.8 次</td><td class="num">客单价 ≈£43</td></tr>
+        <tr><td>聚类3 · <b>批发型客户</b></td><td class="num">15 (0.3%)</td><td class="num">78.9 次</td><td class="num">£110,064</td></tr>
+        <tr><td>聚类2 · 偶然大单</td><td class="num">2</td><td class="num">1.5 次</td><td class="num">£122,828</td></tr>
+      </table>
+    </div>
+    <div class="callout amber"><b>边界意识：</b>99% 以上的客户集中在两个群体，客户结构极端偏态；15 人的批发型群体是运营上最值得单独管理的对象。同时我在报告中讨论了 K-Means 对离群点敏感的问题（2 人小簇即为离群点所致），并给出了 DBSCAN 等替代方案。</div>
+  </div>
+</section>
+
+<!-- 05 Apriori -->
+<section>
+  <h2><span class="no">05</span>Apriori 品类关联规则</h2>
+  <div class="card">
+    <p><b>方法。</b>目标是从交易记录中挖掘"买了 A 也常买 B"的规律。商品 ID 级别（3,659 种商品）的直接挖掘会组合爆炸（触发约 88.5 GiB 内存分配错误），因此按商品编码首位映射到 9 个近似品类，在品类级别以最低支持度 2%、最低置信度 20% 挖掘，得到 25 个频繁项集与 40 条关联规则，并以提升度（lift&gt;1 表示正相关）衡量关联强度。</p>
+    <div class="grid2">
+      <div id="rules" class="chart sm"></div>
+      <table>
+        <tr><th>规则（品类级）</th><th class="num">提升度</th><th>业务含义</th></tr>
+        <tr><td>电子配件 + 布艺纺织 → 装饰品</td><td class="num"><b>2.21</b></td><td>三类交叉购买倾向最强</td></tr>
+        <tr><td>玩具模型 → 布艺纺织</td><td class="num">2.06</td><td>玩具买家常搭配家居布艺</td></tr>
+        <tr><td>装饰品 → 布艺纺织</td><td class="num">1.58</td><td>装饰品买家易搭购靠垫桌布</td></tr>
+        <tr><td>电子配件 → 装饰品</td><td class="num">1.44</td><td>装饰灯串等场景重叠</td></tr>
+      </table>
+    </div>
+    <div class="callout"><b>落地方式：</b>大部分高提升度规则的支持度仅在 0.02 左右——关联存在但不是普遍现象，因此推荐策略应是"对已购买某品类的客户定向推送"，而非全量无差别推荐。规则类方案实现成本低、可解释性强，适合小电商冷启动阶段。</div>
+  </div>
+</section>
+
+<!-- 06 趋势 -->
+<section>
+  <h2><span class="no">06</span>销售趋势与预测</h2>
+  <div class="card">
+    <div id="trend" class="chart"></div>
+    <div class="callout amber"><b>一个容易踩的坑：</b>12 月销售额骤降至 £513k 并非业务下滑，而是数据集在 12 月 9 日截断、仅收录前 9 天交易。若不画图直接看数字，很容易误判为业务问题——这也是可视化在整个分析流程中起"校准"作用的一个实例。</div>
+    <p><b>模型与结论。</b>线性回归对 13 个月序列拟合：R²=0.37，MAE≈£130,707，趋势斜率为每月 +£33,948，说明整体处于增长通道；外推 2012 年 1–3 月预测区间为 £912k–979k（图中虚线）。我在报告中明确：R² 偏低意味着线性模型不适合精确月度预测，改进方向是加入月份哑变量或用 Holt-Winters / SARIMA 处理季节性；趋势方向本身比精确数值更有参考价值。</p>
+    <p class="note">销售额呈现以 2011 年 9–11 月为峰值的季节性模式（11 月最高约 £1,142k），与英国圣诞购物预热期吻合。</p>
+  </div>
+</section>
+
+<!-- 07 建议 -->
+<section>
+  <h2><span class="no">07</span>结论与运营建议</h2>
+  <div class="card">
+    <p><b>① 客户分层运营，而非一刀切。</b>高价值客户（645 人）贡献巨大，值得建立专属服务（专属通道、新品优先、节日礼赠），维护成本远低于拉新。对占 40% 的低价值/一次性客户，设计自动化转化流程：首单后第 3 天发关联推荐、第 7 天推限时券、第 30 天发挽留优惠——并用 A/B 测试验证每一步的真实效果。</p>
+    <p><b>② 品类联动在购物车与详情页落地。</b>装饰品、布艺纺织、电子配件交叉购买信号明确，可在详情页增加"搭配推荐"模块，购物车检测到布艺类商品时自动展示装饰品热销单品。</p>
+    <p><b>③ 备货与促销跟着数据节奏走。</b>9–11 月是明确旺季，备货应在 8 月底前到位；1–2 月淡季适合做会员回馈而非大规模促销。</p>
+  </div>
+</section>
+
+<!-- 08 AI 使用说明 -->
+<section>
+  <h2><span class="no">08</span>AI 使用说明</h2>
+  <div class="card">
+    <p>本作品全程在 AI 工具（豆包 / ChatGPT / Claude 等）辅助下完成，人机分工如下：</p>
+    <table>
+      <tr><th style="width:180px">环节</th><th>我的工作</th><th>AI 辅助承担</th></tr>
+      <tr><td>选题与分析方案</td><td>确定业务问题、分析框架、指标口径</td><td>思路参考与方案讨论</td></tr>
+      <tr><td>数据清洗与特征工程</td><td>制定清洗规则并逐条审校（业务逻辑判断）</td><td>清洗代码生成与调试</td></tr>
+      <tr><td>RFM 打分与分层</td><td>设计 safe_qcut 降级打分逻辑、确定分层阈值</td><td>代码实现与边界情况讨论</td></tr>
+      <tr><td>K-Means 聚类</td><td>特征选择、K 值确定（肘部法则）、画像解读</td><td>代码实现与调参</td></tr>
+      <tr><td>Apriori 关联规则</td><td>阈值设定、规则解读与业务化</td><td>代码实现与内存问题排查</td></tr>
+      <tr><td>可视化与报告</td><td>图表选择、结论与建议撰写</td><td>图表代码、版式与文字润色</td></tr>
+    </table>
+    <p class="note" style="margin-top:10px">AI 承担的是"写代码、画图、润色"的执行性工作；业务判断、指标口径与所有结论均由我主导并逐条审校。本页面即为该协作方式的产出物。</p>
+  </div>
+</section>
+
+<footer>
+  杨浩 · 南京林业大学 大数据管理与应用 2027 届 · 数据分析作品（AI 辅助完成）<br>
+  数据来源：UCI Machine Learning Repository — Online Retail（公开匿名数据集，聚合口径展示）
+</footer>
+
+</div>
+
+<script>
+var DATA = {
+  clean: [
+    ["原始数据", 541909], ["剔除匿名交易", 406829], ["剔除退货记录", 397924],
+    ["剔除无效价格", 397884], ["有效数据", 396337]
+  ],
+  rfm: {
+    cats: ["高价值客户", "中价值客户", "低价值客户", "流失客户"],
+    cust: [14.9, 26.5, 40.3, 18.3],
+    rev:  [57, 28, 13, 2]
+  },
+  clusters: [
+    {name:"聚类0 中等活跃", v:[0.916, 0.078, 0.444]},
+    {name:"聚类1 一次性客户", v:[0.360, 0.023, 0.370]},
+    {name:"聚类3 批发型客户", v:[0.974, 0.986, 0.985]},
+    {name:"聚类2 偶然大单", v:[0.352, 0.019, 0.995]}
+  ],
+  rules: [
+    {name:"电子配件+布艺纺织→装饰品", value:[0.021, 0.24, 2.21]},
+    {name:"玩具模型→布艺纺织", value:[0.020, 0.28, 2.06]},
+    {name:"装饰品→布艺纺织", value:[0.033, 0.31, 1.58]},
+    {name:"电子配件→装饰品", value:[0.035, 0.22, 1.44]}
+  ],
+  months: [
+    ["2010-12",585],["2011-01",480],["2011-02",445],["2011-03",535],["2011-04",520],
+    ["2011-05",575],["2011-06",555],["2011-07",590],["2011-08",650],["2011-09",941],
+    ["2011-10",1006],["2011-11",1142],["2011-12",513]
+  ],
+  pred: [["2012-01",912],["2012-02",946],["2012-03",979]]
+};
+
+function buildCharts(){
+  var base = {
+    textStyle:{fontFamily:'system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif', color:'#52514e'},
+    grid:{left:70,right:24,top:30,bottom:34},
+    tooltip:{trigger:'axis', backgroundColor:'#fcfcfb', borderColor:'rgba(11,11,11,.10)', textStyle:{color:'#0b0b0b'}}
+  };
+
+  // 清洗漏斗
+  var cleanEl = document.getElementById('clean');
+  if(cleanEl){
+    var c = DATA.clean, n = c.length;
+    echarts.init(cleanEl).setOption({
+      textStyle:base.textStyle,
+      grid:{left:150,right:70,top:14,bottom:30},
+      tooltip:{trigger:'axis', axisPointer:{type:'shadow'}, valueFormatter:function(v){return v.toLocaleString()+" 条"}},
+      xAxis:{type:'value', axisLabel:{color:'#898781'}, splitLine:{lineStyle:{color:'#e1e0d9'}}, axisLine:{lineStyle:{color:'#c3c2b7'}}},
+      yAxis:{type:'category', data:c.map(function(d){return d[0]}), axisLabel:{color:'#52514e', fontSize:12}, axisLine:{lineStyle:{color:'#c3c2b7'}}, axisTick:{show:false}},
+      series:[{type:'bar', barWidth:18, data:c.map(function(d,i){
+        return {value:d[1], itemStyle:{color:['#184f95','#2a78d6','#5598e7','#86b6ef','#cde2fb'][i], borderRadius:[0,4,4,0]},
+          label:{show:true, position:'right', color:'#52514e', fontSize:12, formatter:function(){return d[1].toLocaleString()}}};
+      })}]
+    });
+  }
+
+  // RFM 分层
+  var rfmEl = document.getElementById('rfm');
+  if(rfmEl){
+    echarts.init(rfmEl).setOption({
+      textStyle:base.textStyle,
+      grid:{left:50,right:24,top:40,bottom:30},
+      legend:{top:4, textStyle:{color:'#52514e', fontSize:12}},
+      tooltip:{trigger:'axis', axisPointer:{type:'shadow'}, valueFormatter:function(v){return v+"%"}},
+      xAxis:{type:'category', data:DATA.rfm.cats, axisLabel:{color:'#52514e'}, axisLine:{lineStyle:{color:'#c3c2b7'}}, axisTick:{show:false}},
+      yAxis:{type:'value', max:60, axisLabel:{color:'#898781', formatter:'{value}%'}, splitLine:{lineStyle:{color:'#e1e0d9'}}, axisLine:{lineStyle:{color:'#c3c2b7'}}},
+      series:[
+        {name:'客户数占比', type:'bar', barWidth:16, itemStyle:{color:'#2a78d6', borderRadius:[4,4,0,0]}, data:DATA.rfm.cust},
+        {name:'交易额占比', type:'bar', barWidth:16, itemStyle:{color:'#eb6834', borderRadius:[4,4,0,0]}, data:DATA.rfm.rev}
+      ]
+    });
+  }
+
+  // K-Means 雷达
+  var radarEl = document.getElementById('radar');
+  if(radarEl){
+    var colors = ['#2a78d6','#eb6834','#1baf7a','#eda100'];
+    echarts.init(radarEl).setOption({
+      textStyle:base.textStyle,
+      legend:{bottom:0, textStyle:{color:'#52514e', fontSize:11}},
+      tooltip:{trigger:'item', backgroundColor:'#fcfcfb', borderColor:'rgba(11,11,11,.10)', textStyle:{color:'#0b0b0b'}},
+      radar:{
+        center:['50%','46%'], radius:'62%',
+        indicator:[
+          {name:'活跃度', max:1}, {name:'购买频次', max:1}, {name:'消费能力', max:1}
+        ],
+        axisName:{color:'#52514e', fontSize:12},
+        splitLine:{lineStyle:{color:'#e1e0d9'}}, splitArea:{show:false},
+        axisLine:{lineStyle:{color:'#c3c2b7'}}
+      },
+      series:[{type:'radar', data:DATA.clusters.map(function(d,i){
+        return {name:d.name, value:d.v, lineStyle:{color:colors[i], width:2}, itemStyle:{color:colors[i]}, areaStyle:{color:colors[i], opacity:0.06}};
+      })}]
+    });
+  }
+
+  // 关联规则气泡
+  var rulesEl = document.getElementById('rules');
+  if(rulesEl){
+    var rc = ['#2a78d6','#eb6834','#1baf7a','#eda100'];
+    echarts.init(rulesEl).setOption({
+      textStyle:base.textStyle,
+      grid:{left:56,right:30,top:26,bottom:40},
+      tooltip:{trigger:'item', backgroundColor:'#fcfcfb', borderColor:'rgba(11,11,11,.10)', textStyle:{color:'#0b0b0b'},
+        formatter:function(p){var r=DATA.rules[p.dataIndex]; return r.name+"<br>支持度 "+(r.value[0]*100).toFixed(1)+"%<br>置信度 "+(r.value[1]*100).toFixed(0)+"%<br>提升度 <b>"+r.value[2].toFixed(2)+"</b>";}},
+      xAxis:{type:'value', name:'支持度', nameTextStyle:{color:'#898781'}, min:0, max:0.045, axisLabel:{color:'#898781', formatter:function(v){return (v*100).toFixed(1)+'%'}}, splitLine:{lineStyle:{color:'#e1e0d9'}}, axisLine:{lineStyle:{color:'#c3c2b7'}}},
+      yAxis:{type:'value', name:'置信度', nameTextStyle:{color:'#898781'}, min:0.1, max:0.45, axisLabel:{color:'#898781', formatter:function(v){return (v*100).toFixed(0)+'%'}}, splitLine:{lineStyle:{color:'#e1e0d9'}}, axisLine:{lineStyle:{color:'#c3c2b7'}}},
+      series:[{type:'scatter', symbolSize:function(v){return v[2]*16},
+        data:DATA.rules.map(function(r,i){return {value:r.value, itemStyle:{color:rc[i], opacity:0.75}, label:{show:true, position:'top', formatter:function(){return 'lift '+r.value[2]}, color:'#52514e', fontSize:11}};})}]
+    });
+  }
+
+  // 销售趋势
+  var trendEl = document.getElementById('trend');
+  if(trendEl){
+    var months = DATA.months.map(function(d){return d[0]}).concat(DATA.pred.map(function(d){return d[0]}));
+    var revs = DATA.months.map(function(d){return d[1]}).concat([null,null,null]);
+    var preds = [null,null,null,null,null,null,null,null,null,null,null,null,null].concat(DATA.pred.map(function(d){return d[1]}));
+    echarts.init(trendEl).setOption({
+      textStyle:base.textStyle,
+      grid:{left:64,right:24,top:40,bottom:36},
+      legend:{top:4, textStyle:{color:'#52514e', fontSize:12}},
+      tooltip:{trigger:'axis', backgroundColor:'#fcfcfb', borderColor:'rgba(11,11,11,.10)', textStyle:{color:'#0b0b0b'}, valueFormatter:function(v){return v==null?'—':'£'+v+'k'}},
+      xAxis:{type:'category', data:months, axisLabel:{color:'#898781', fontSize:11, rotate:0}, axisLine:{lineStyle:{color:'#c3c2b7'}}, axisTick:{show:false}, boundaryGap:false},
+      yAxis:{type:'value', axisLabel:{color:'#898781', formatter:'£{value}k'}, splitLine:{lineStyle:{color:'#e1e0d9'}}, axisLine:{lineStyle:{color:'#c3c2b7'}}},
+      series:[
+        {name:'实际销售额', type:'line', smooth:true, data:revs, itemStyle:{color:'#2a78d6'}, lineStyle:{width:2.5}, symbolSize:6,
+          areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(42,120,214,0.18)'},{offset:1,color:'rgba(42,120,214,0)'}]}}},
+        {name:'趋势预测（线性外推）', type:'line', smooth:false, data:preds, itemStyle:{color:'#eb6834'}, lineStyle:{width:2, type:'dashed'}, symbolSize:6}
+      ]
+    });
+  }
+}
+
+function initAll(){
+  if(window.echarts){ buildCharts(); }
+  else{
+    var s=document.createElement('script');
+    s.src='https://unpkg.com/echarts@5.4.3/dist/echarts.min.js';
+    s.onload=buildCharts; s.onerror=function(){document.body.insertAdjacentHTML('beforeend','<p style="text-align:center;color:#898781;margin-top:40px">图表组件加载失败：请检查网络后刷新页面。</p>');};
+    document.head.appendChild(s);
+  }
+}
+window.addEventListener('load', initAll);
+</script>
+</body>
+</html>
